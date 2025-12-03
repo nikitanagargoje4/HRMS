@@ -4,8 +4,9 @@ import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
 export default defineConfig({
-  // Use a sub-path when building for production so the app can be hosted under /hrms
-  base: process.env.NODE_ENV === 'production' ? '/hrms/' : '/',
+  // IMPORTANT: Render serves site at root, so base path must be "/"
+  base: "/",
+
   plugins: [
     react(),
     runtimeErrorOverlay(),
@@ -18,6 +19,7 @@ export default defineConfig({
         ]
       : []),
   ],
+
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),
@@ -25,10 +27,11 @@ export default defineConfig({
       "@assets": path.resolve(import.meta.dirname, "attached_assets"),
     },
   },
+
   root: path.resolve(import.meta.dirname, "client"),
+
   build: {
-    // Put the built client directly into `dist/` so `index.html` lives at `dist/index.html`.
-    // This matches your request to have index.html directly under `dist`.
+    // Render must have all build files inside /dist/
     outDir: path.resolve(import.meta.dirname, "dist"),
     emptyOutDir: true,
   },
